@@ -1,0 +1,90 @@
+
+Arawn_OP.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1선 copy
+  rotate: false
+  xy: 1311, 461
+  size: 55, 49
+  orig: 55, 49
+  offset: 0, 0
+  index: -1
+Layer 1
+  rotate: false
+  xy: 1311, 414
+  size: 33, 45
+  orig: 33, 45
+  offset: 0, 0
+  index: -1
+Layer 2
+  rotate: false
+  xy: 917, 108
+  size: 40, 53
+  orig: 40, 53
+  offset: 0, 0
+  index: -1
+Layer 3
+  rotate: false
+  xy: 288, 31
+  size: 45, 46
+  orig: 45, 46
+  offset: 0, 0
+  index: -1
+뒷머리
+  rotate: false
+  xy: 2, 79
+  size: 461, 431
+  orig: 461, 431
+  offset: 0, 0
+  index: -1
+머리 선
+  rotate: true
+  xy: 465, 87
+  size: 423, 450
+  orig: 423, 450
+  offset: 0, 0
+  index: -1
+몸통 선
+  rotate: false
+  xy: 917, 264
+  size: 187, 246
+  orig: 187, 246
+  offset: 0, 0
+  index: -1
+오른 팔선
+  rotate: true
+  xy: 917, 163
+  size: 99, 179
+  orig: 99, 179
+  offset: 0, 0
+  index: -1
+오른다리 선
+  rotate: true
+  xy: 1106, 285
+  size: 99, 179
+  orig: 99, 179
+  offset: 0, 0
+  index: -1
+왼다리 선
+  rotate: true
+  xy: 147, 5
+  size: 72, 139
+  orig: 72, 139
+  offset: 0, 0
+  index: -1
+왼팔 선
+  rotate: true
+  xy: 2, 2
+  size: 75, 143
+  orig: 75, 143
+  offset: 0, 0
+  index: -1
+웃는
+  rotate: false
+  xy: 1106, 386
+  size: 203, 124
+  orig: 203, 124
+  offset: 0, 0
+  index: -1

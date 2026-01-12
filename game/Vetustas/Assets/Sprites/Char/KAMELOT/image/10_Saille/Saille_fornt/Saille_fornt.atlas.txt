@@ -1,0 +1,55 @@
+
+Saille_fornt.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+뒷머리
+  rotate: false
+  xy: 2, 44
+  size: 429, 453
+  orig: 429, 453
+  offset: 0, 0
+  index: -1
+머리
+  rotate: false
+  xy: 433, 146
+  size: 391, 351
+  orig: 391, 351
+  offset: 0, 0
+  index: -1
+몸채
+  rotate: false
+  xy: 826, 250
+  size: 178, 247
+  orig: 178, 247
+  offset: 0, 0
+  index: -1
+오른다리
+  rotate: true
+  xy: 433, 48
+  size: 96, 168
+  orig: 96, 168
+  offset: 0, 0
+  index: -1
+오른팔
+  rotate: true
+  xy: 826, 158
+  size: 90, 157
+  orig: 90, 157
+  offset: 0, 0
+  index: -1
+왼다리
+  rotate: true
+  xy: 603, 2
+  size: 73, 132
+  orig: 73, 132
+  offset: 0, 0
+  index: -1
+왼팔
+  rotate: true
+  xy: 603, 77
+  size: 67, 139
+  orig: 67, 139
+  offset: 0, 0
+  index: -1

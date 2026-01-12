@@ -1,0 +1,55 @@
+
+skeleton.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+뒷머리
+  rotate: false
+  xy: 374, 114
+  size: 366, 372
+  orig: 366, 372
+  offset: 0, 0
+  index: -1
+머리선
+  rotate: false
+  xy: 2, 96
+  size: 370, 390
+  orig: 370, 390
+  offset: 0, 0
+  index: -1
+오른팔
+  rotate: true
+  xy: 2, 2
+  size: 92, 159
+  orig: 92, 159
+  offset: 0, 0
+  index: -1
+왼팔
+  rotate: false
+  xy: 918, 343
+  size: 68, 143
+  orig: 68, 143
+  offset: 0, 0
+  index: -1
+캄란_앞몸체
+  rotate: false
+  xy: 742, 247
+  size: 174, 239
+  orig: 174, 239
+  offset: 0, 0
+  index: -1
+캄란_앞오른다
+  rotate: true
+  xy: 742, 147
+  size: 98, 152
+  orig: 98, 152
+  offset: 0, 0
+  index: -1
+캄란_앞왼다리
+  rotate: true
+  xy: 163, 25
+  size: 69, 110
+  orig: 69, 110
+  offset: 0, 0
+  index: -1

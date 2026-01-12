@@ -1,0 +1,41 @@
+
+NPC1_front.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+다리
+  rotate: false
+  xy: 719, 392
+  size: 156, 114
+  orig: 156, 114
+  offset: 0, 0
+  index: -1
+머리
+  rotate: false
+  xy: 2, 106
+  size: 444, 400
+  orig: 444, 400
+  offset: 0, 0
+  index: -1
+상체
+  rotate: false
+  xy: 448, 147
+  size: 236, 174
+  orig: 236, 174
+  offset: 0, 0
+  index: -1
+오른팔
+  rotate: false
+  xy: 2, 2
+  size: 61, 102
+  orig: 61, 102
+  offset: 0, 0
+  index: -1
+하체
+  rotate: false
+  xy: 448, 323
+  size: 269, 183
+  orig: 269, 183
+  offset: 0, 0
+  index: -1

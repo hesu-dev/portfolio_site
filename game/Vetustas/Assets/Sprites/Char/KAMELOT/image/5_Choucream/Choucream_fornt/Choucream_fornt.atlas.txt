@@ -1,0 +1,55 @@
+
+Choucream_fornt.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+뒷망토
+  rotate: true
+  xy: 2, 106
+  size: 403, 574
+  orig: 403, 574
+  offset: 0, 0
+  index: -1
+앞_머리
+  rotate: false
+  xy: 578, 106
+  size: 375, 403
+  orig: 375, 403
+  offset: 0, 0
+  index: -1
+앞_몸체
+  rotate: false
+  xy: 955, 258
+  size: 167, 251
+  orig: 167, 251
+  offset: 0, 0
+  index: -1
+앞_오른팔
+  rotate: true
+  xy: 2, 2
+  size: 102, 155
+  orig: 102, 155
+  offset: 0, 0
+  index: -1
+앞_왼팔
+  rotate: false
+  xy: 1124, 370
+  size: 70, 139
+  orig: 70, 139
+  offset: 0, 0
+  index: -1
+카멜롯_앞오른다
+  rotate: true
+  xy: 955, 158
+  size: 98, 152
+  orig: 98, 152
+  offset: 0, 0
+  index: -1
+카멜롯_앞왼다리
+  rotate: true
+  xy: 159, 34
+  size: 70, 109
+  orig: 70, 109
+  offset: 0, 0
+  index: -1

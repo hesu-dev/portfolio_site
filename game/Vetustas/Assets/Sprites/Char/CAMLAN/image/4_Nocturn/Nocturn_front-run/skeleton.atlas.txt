@@ -1,0 +1,48 @@
+
+skeleton.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+머리선-녹턴
+  rotate: false
+  xy: 2, 104
+  size: 366, 359
+  orig: 366, 359
+  offset: 0, 0
+  index: -1
+오른다리-녹턴
+  rotate: true
+  xy: 2, 2
+  size: 100, 171
+  orig: 100, 171
+  offset: 0, 0
+  index: -1
+왼다리-녹턴
+  rotate: false
+  xy: 546, 327
+  size: 75, 136
+  orig: 75, 136
+  offset: 0, 0
+  index: -1
+캄란_앞몸체
+  rotate: false
+  xy: 370, 224
+  size: 174, 239
+  orig: 174, 239
+  offset: 0, 0
+  index: -1
+캄란_앞오른팔
+  rotate: true
+  xy: 370, 131
+  size: 91, 158
+  orig: 91, 158
+  offset: 0, 0
+  index: -1
+캄란_앞왼팔
+  rotate: true
+  xy: 175, 33
+  size: 69, 140
+  orig: 69, 140
+  offset: 0, 0
+  index: -1

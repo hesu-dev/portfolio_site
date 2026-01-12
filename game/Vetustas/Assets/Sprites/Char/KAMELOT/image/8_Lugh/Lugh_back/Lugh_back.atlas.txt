@@ -1,0 +1,48 @@
+
+Lugh_back.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+머리_뒤_
+  rotate: false
+  xy: 2, 105
+  size: 434, 385
+  orig: 434, 385
+  offset: 0, 0
+  index: -1
+카멜롯_뒤몸체
+  rotate: false
+  xy: 438, 231
+  size: 177, 259
+  orig: 177, 259
+  offset: 0, 0
+  index: -1
+카멜롯_뒤오른팔
+  rotate: true
+  xy: 438, 147
+  size: 82, 160
+  orig: 82, 160
+  offset: 0, 0
+  index: -1
+카멜롯_앞왼팔
+  rotate: false
+  xy: 617, 346
+  size: 69, 144
+  orig: 69, 144
+  offset: 0, 0
+  index: -1
+카멜롯_오른발
+  rotate: true
+  xy: 2, 2
+  size: 101, 157
+  orig: 101, 157
+  offset: 0, 0
+  index: -1
+카멜롯_왼발
+  rotate: true
+  xy: 161, 25
+  size: 78, 118
+  orig: 78, 118
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,20 @@
+
+Exclamation mark.png
+size: 256,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+느낌표
+  rotate: false
+  xy: 131, 7
+  size: 38, 92
+  orig: 38, 92
+  offset: 0, 0
+  index: -1
+말풍선
+  rotate: true
+  xy: 2, 2
+  size: 97, 127
+  orig: 97, 127
+  offset: 0, 0
+  index: -1

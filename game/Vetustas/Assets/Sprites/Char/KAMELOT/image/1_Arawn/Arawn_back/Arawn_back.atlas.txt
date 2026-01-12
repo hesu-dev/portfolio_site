@@ -1,0 +1,62 @@
+
+Arawn_back.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 2
+  rotate: false
+  xy: 415, 156
+  size: 406, 350
+  orig: 406, 350
+  offset: 0, 0
+  index: -1
+뒤_몸체
+  rotate: false
+  xy: 823, 247
+  size: 178, 259
+  orig: 178, 259
+  offset: 0, 0
+  index: -1
+뒤_오른팔
+  rotate: true
+  xy: 823, 163
+  size: 82, 160
+  orig: 82, 160
+  offset: 0, 0
+  index: -1
+뒤_왼팔
+  rotate: true
+  xy: 415, 81
+  size: 73, 143
+  orig: 73, 143
+  offset: 0, 0
+  index: -1
+얼굴
+  rotate: false
+  xy: 2, 105
+  size: 411, 401
+  orig: 411, 401
+  offset: 0, 0
+  index: -1
+카멜롯_오른발
+  rotate: true
+  xy: 2, 2
+  size: 101, 157
+  orig: 101, 157
+  offset: 0, 0
+  index: -1
+카멜롯_오른팔
+  rotate: true
+  xy: 161, 21
+  size: 82, 160
+  orig: 82, 160
+  offset: 0, 0
+  index: -1
+카멜롯_왼발
+  rotate: true
+  xy: 560, 76
+  size: 78, 118
+  orig: 78, 118
+  offset: 0, 0
+  index: -1

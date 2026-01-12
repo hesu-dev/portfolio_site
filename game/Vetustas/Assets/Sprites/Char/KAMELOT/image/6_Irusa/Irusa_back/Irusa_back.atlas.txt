@@ -1,0 +1,55 @@
+
+Irusa_back.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+꽁지
+  rotate: true
+  xy: 2, 2
+  size: 72, 297
+  orig: 72, 297
+  offset: 0, 0
+  index: -1
+얼굴 선
+  rotate: false
+  xy: 2, 76
+  size: 410, 368
+  orig: 410, 368
+  offset: 0, 0
+  index: -1
+카멜롯_몸
+  rotate: false
+  xy: 414, 185
+  size: 177, 259
+  orig: 177, 259
+  offset: 0, 0
+  index: -1
+카멜롯_오른발
+  rotate: true
+  xy: 414, 82
+  size: 101, 157
+  orig: 101, 157
+  offset: 0, 0
+  index: -1
+카멜롯_오른팔
+  rotate: false
+  xy: 593, 284
+  size: 82, 160
+  orig: 82, 160
+  offset: 0, 0
+  index: -1
+카멜롯_왼발
+  rotate: false
+  xy: 748, 326
+  size: 78, 118
+  orig: 78, 118
+  offset: 0, 0
+  index: -1
+카멜롯_왼팔
+  rotate: false
+  xy: 677, 301
+  size: 69, 143
+  orig: 69, 143
+  offset: 0, 0
+  index: -1

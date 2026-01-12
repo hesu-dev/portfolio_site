@@ -1,0 +1,69 @@
+
+Palarak_fornt.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+앞_뒷망토
+  rotate: true
+  xy: 376, 256
+  size: 254, 421
+  orig: 254, 421
+  offset: 0, 0
+  index: -1
+앞_망토
+  rotate: false
+  xy: 745, 104
+  size: 214, 150
+  orig: 214, 150
+  offset: 0, 0
+  index: -1
+앞_머리2
+  rotate: true
+  xy: 376, 109
+  size: 145, 367
+  orig: 145, 367
+  offset: 0, 0
+  index: -1
+앞_몸체
+  rotate: false
+  xy: 799, 267
+  size: 175, 243
+  orig: 175, 243
+  offset: 0, 0
+  index: -1
+앞_얼굴
+  rotate: false
+  xy: 2, 141
+  size: 372, 369
+  orig: 372, 369
+  offset: 0, 0
+  index: -1
+앞_오른발
+  rotate: true
+  xy: 173, 42
+  size: 97, 154
+  orig: 97, 154
+  offset: 0, 0
+  index: -1
+앞_오른팔
+  rotate: true
+  xy: 2, 2
+  size: 105, 169
+  orig: 105, 169
+  offset: 0, 0
+  index: -1
+앞_왼발
+  rotate: true
+  xy: 480, 38
+  size: 69, 111
+  orig: 69, 111
+  offset: 0, 0
+  index: -1
+앞_왼팔
+  rotate: true
+  xy: 329, 29
+  size: 78, 149
+  orig: 78, 149
+  offset: 0, 0
+  index: -1

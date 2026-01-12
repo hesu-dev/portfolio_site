@@ -1,0 +1,27 @@
+
+NPC2_front.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+다리
+  rotate: false
+  xy: 2, 2
+  size: 159, 114
+  orig: 159, 114
+  offset: 0, 0
+  index: -1
+머리
+  rotate: false
+  xy: 2, 118
+  size: 397, 366
+  orig: 397, 366
+  offset: 0, 0
+  index: -1
+몸
+  rotate: false
+  xy: 401, 272
+  size: 262, 212
+  orig: 262, 212
+  offset: 0, 0
+  index: -1

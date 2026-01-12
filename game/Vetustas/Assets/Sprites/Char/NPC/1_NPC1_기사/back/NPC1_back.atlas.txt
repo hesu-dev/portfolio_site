@@ -1,0 +1,41 @@
+
+NPC1_back.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+다리
+  rotate: false
+  xy: 2, 2
+  size: 168, 94
+  orig: 168, 94
+  offset: 0, 0
+  index: -1
+얼굴
+  rotate: false
+  xy: 2, 98
+  size: 471, 410
+  orig: 471, 410
+  offset: 0, 0
+  index: -1
+카멜롯 몸
+  rotate: false
+  xy: 475, 228
+  size: 275, 280
+  orig: 275, 280
+  offset: 0, 0
+  index: -1
+팔
+  rotate: false
+  xy: 475, 115
+  size: 62, 111
+  orig: 62, 111
+  offset: 0, 0
+  index: -1
+하페
+  rotate: false
+  xy: 752, 335
+  size: 193, 173
+  orig: 193, 173
+  offset: 0, 0
+  index: -1
