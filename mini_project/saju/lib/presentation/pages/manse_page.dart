@@ -16,7 +16,7 @@ class MansePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFAF8F5),
-      appBar: AppBar(title: const Text('만세력 사주 보기')),
+      appBar: AppBar(title: const Text('만세력 사주 보기 1.0')),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
@@ -24,7 +24,6 @@ class MansePage extends StatelessWidget {
             if (kDebugMode)
               TextButton(
                 onPressed: () {
-                  print('TEST BUTTON CLICKED');
                   context.read<ManseFormProvider>().fillTestData();
                 },
                 child: const Text('⚡ 테스트 자동 입력'),

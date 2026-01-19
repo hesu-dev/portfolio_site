@@ -34,6 +34,7 @@ class ManseCalculator {
       julianDay: julianDay,
       timeInput: request.hhmm,
       pillars: MansePillarsDto(year: year, month: month, day: day, time: time),
+      bloodMappings: [],
     );
   }
 }

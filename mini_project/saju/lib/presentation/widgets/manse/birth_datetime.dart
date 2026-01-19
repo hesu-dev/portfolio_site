@@ -84,7 +84,7 @@ class ManseBirthDateTime extends StatelessWidget {
             GestureDetector(
               onTap: () => showYajaJojaInfo(context),
               child: const Text(
-                '야자시/조자시',
+                '야자시/조자시란?',
                 style: TextStyle(decoration: TextDecoration.underline),
               ),
             ),

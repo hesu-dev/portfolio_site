@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../domain/models/manse_result_dto.dart';
+import 'package:saju/domain/models/pillar_dto.dart';
 
 class PillarTableView extends StatelessWidget {
   final ManseResultDto result;
@@ -18,12 +17,7 @@ class PillarTableView extends StatelessWidget {
       children: [
         _headerRow(),
         _row('천간', [p.time.sky, p.day.sky, p.month.sky, p.year.sky], big: true),
-        // _row('십성', [
-        //   p.time.bloodSky ?? '-',
-        //   p.day.bloodSky ?? '-',
-        //   p.month.bloodSky ?? '-',
-        //   p.year.bloodSky ?? '-',
-        // ]),
+        _row('십성', [p.time.sky, p.day.sky, p.month.sky, p.year.sky], big: true),
         _row('지지', [
           p.time.ground,
           p.day.ground,

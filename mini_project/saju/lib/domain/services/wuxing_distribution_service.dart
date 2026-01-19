@@ -1,5 +1,6 @@
+import 'package:saju/domain/models/pillar_dto.dart';
+
 import '../enums/wu_xing.dart';
-import '../models/manse_result_dto.dart';
 
 class WuXingDistribution {
   final Map<WuXing, int> count;

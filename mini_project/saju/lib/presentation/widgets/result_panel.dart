@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:saju/domain/enums/wu_xing.dart';
 import 'package:saju/domain/models/animal_title.dart';
+import 'package:saju/domain/models/pillar_dto.dart';
+import 'package:saju/presentation/sheets/animal_info_sheet.dart';
 import 'package:saju/presentation/widgets/result/input_summary_view.dart';
 import 'package:saju/presentation/widgets/result/pillar_table_view.dart';
 import 'package:saju/presentation/widgets/result/wuxing_chart_view.dart';
 import 'package:saju/presentation/widgets/result/wuxing_table_view.dart';
+import 'package:saju/providers/manse_form_provider.dart';
 
-import '../../domain/models/manse_result_dto.dart';
 import '../../domain/services/wuxing_distribution_service.dart';
 import '../../domain/services/yin_yang_balance_service.dart';
 import '../../domain/services/animal_title_service.dart';
@@ -39,8 +42,7 @@ class ResultPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _section(_profileHeader(animalTitle)),
-          _section(_inputSummary()),
+          _section(_profileHeader(animalTitle, context)),
           _section(PillarTableView(result: result)),
           _section(_wuxingSection(wuxingDist)),
           _section(_yinYangSection(yinYang)),
@@ -65,31 +67,45 @@ class ResultPanel extends StatelessWidget {
   // =========================
   // 1. 프로필 + 별칭
   // =========================
-  Widget _profileHeader(AnimalTitle animalTitle) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _profileHeader(AnimalTitle animalTitle, BuildContext context) {
+    final form = context.watch<ManseFormProvider>();
+    return Column(
       children: [
-        const CircleAvatar(radius: 28, child: Icon(Icons.person)),
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '${animalTitle.korean}(${animalTitle.chinese})',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${animalTitle.koreanHanja}의 당신은..\n${animalTitle.meaning}',
-              style: const TextStyle(color: Colors.black54),
-            ),
+            const CircleAvatar(radius: 28, child: Icon(Icons.person)),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${form.name}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  // '${animalTitle.korean}(${animalTitle.chinese})'
+                  '${result.pillars.day.sky}${result.pillars.day.ground}(${animalTitle.koreanHanja})의 당신은..',
+                  style: const TextStyle(color: Colors.black54),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.help_outline),
+                  onPressed: () => AnimalInfoSheet(),
+                ),
 
-            Text(
-              '${result.pillars.day.sky}${result.pillars.day.ground}',
-              style: const TextStyle(color: Colors.black54),
+                Text(
+                  animalTitle.meaning,
+                  style: const TextStyle(color: Colors.black54, fontSize: 10),
+                ),
+              ],
             ),
           ],
         ),
+        _inputSummary(),
       ],
     );
   }
@@ -101,6 +117,7 @@ class ResultPanel extends StatelessWidget {
     return InputSummaryView(
       solar: result.solarDate, // 예: 2022/11/11 19:00
       lunar: result.solarDate, // 예: 2022/10/18 19:00 (평)
+      time: result.timeInput,
       adjusted: result.solarDate, // 예: 지역시 -32분
     );
   }

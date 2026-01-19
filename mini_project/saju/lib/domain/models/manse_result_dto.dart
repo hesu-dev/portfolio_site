@@ -27,19 +27,3 @@ class MansePillarsDto {
     required this.time,
   });
 }
-
-class ManseResultDto {
-  final String solarDate; // "YYYY-MM-DD"
-  final LunarDateDto lunarDate;
-  final int julianDay;
-  final MansePillarsDto pillars;
-  final String timeInput; // "HH:mm"
-
-  const ManseResultDto({
-    required this.solarDate,
-    required this.lunarDate,
-    required this.julianDay,
-    required this.pillars,
-    required this.timeInput,
-  });
-}

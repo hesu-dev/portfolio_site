@@ -21,7 +21,6 @@ class _ManseLoadingPageState extends State<ManseLoadingPage> {
   @override
   void initState() {
     super.initState();
-    print('LoadingPage initState');
 
     /// 🔹 load()는 여기서 딱 한 번
     Future.microtask(() {

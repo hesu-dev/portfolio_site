@@ -1,5 +1,7 @@
 import 'package:saju/domain/enums/ground.dart';
 import 'package:saju/domain/enums/sky.dart';
+import 'package:saju/domain/models/blood_mapping_dto.dart';
+import 'package:saju/domain/models/manse_result_dto.dart';
 
 class PillarDto {
   final Sky skyEnum;
@@ -26,5 +28,25 @@ class TimePillarDto extends PillarDto {
     required this.isEarlyZi,
     required super.skyEnum,
     required super.groundEnum,
+  });
+}
+
+class ManseResultDto {
+  final String solarDate;
+  final LunarDateDto lunarDate;
+  final int julianDay;
+  final MansePillarsDto pillars;
+  final String timeInput;
+
+  // 🔽 추가
+  final List<BloodMappingDto> bloodMappings;
+
+  const ManseResultDto({
+    required this.solarDate,
+    required this.lunarDate,
+    required this.julianDay,
+    required this.pillars,
+    required this.timeInput,
+    required this.bloodMappings,
   });
 }

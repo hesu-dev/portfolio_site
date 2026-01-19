@@ -13,10 +13,6 @@ class CalendarApi {
       throw Exception('서비스 키가 없습니다. APP_SECRET_KEY를 확인하세요.');
     }
 
-    print('>>>여기가 출력이 될까요?');
-
-    // final base = AppEnv.screatBaseUrl;
-
     // 한국천문연: 양력->음력(=getLunCalInfo), 음력->양력(=getSolCalInfo)
     final path = (req.calendarType == CalendarType.solar)
         ? 'getLunCalInfo'

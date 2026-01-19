@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:saju/domain/models/pillar_dto.dart';
 
 import '../data/clients/kari_calendar_api.dart';
 import '../data/repositories/manse_repository.dart';
 import '../domain/models/manse_request_dto.dart';
-import '../domain/models/manse_result_dto.dart';
 import '../domain/services/manse_calculator.dart';
 import '../domain/services/time_ground_service.dart';
 import '../domain/services/time_pillar_service.dart';

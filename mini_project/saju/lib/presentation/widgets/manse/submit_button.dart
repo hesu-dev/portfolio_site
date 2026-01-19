@@ -15,7 +15,11 @@ class ManseSubmitButton extends StatelessWidget {
           ? () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const ManseConfirmPage()),
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const ManseConfirmPage(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
               );
             }
           : null,
