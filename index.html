@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Hub</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+  <div class="logo">Project Hub</div>
+
+  <nav class="nav">
+    <a href="#">Projects</a>
+    <a href="#">About</a>
+    <a href="#">Support</a>
+  </nav>
+
+  <div class="login">
+    <button id="loginBtn">Login</button>
+  </div>
+</header>
+
+<!-- ================= LOGIN MODAL ================= -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Login</h2>
+    <input type="text" placeholder="ID" />
+    <input type="password" placeholder="Password" />
+    <button>로그인</button>
+    <span id="closeModal">✕</span>
+  </div>
+</div>
+
+<!-- ================= HERO / CAROUSEL ================= -->
+<section class="carousel">
+  <div class="slides">
+    <div class="slide active" data-link="/p/mini_project/saju/">
+      <img src="assets/images/slide1.jpg" />
+      <div class="caption">Saju Project</div>
+    </div>
+    <div class="slide" data-link="/p/game/my_game/">
+      <img src="assets/images/slide2.jpg" />
+      <div class="caption">Game Project</div>
+    </div>
+  </div>
+
+  <div class="carousel-controls">
+    <button id="prev">‹</button>
+    <button id="next">›</button>
+  </div>
+</section>
+
+<!-- ================= PROJECT ICON HUB ================= -->
+<section class="projects">
+  <h2>Projects</h2>
+  <div class="project-grid">
+    <a href="/p/mini_project/saju/" class="project-card">
+      <img src="assets/images/saju.png" />
+      <span>Saju</span>
+    </a>
+
+    <a href="/p/game/my_game/" class="project-card">
+      <img src="assets/images/game.png" />
+      <span>Game</span>
+    </a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <p>© 2026 Project Hub</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
