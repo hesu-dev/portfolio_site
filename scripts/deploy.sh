@@ -40,11 +40,22 @@ echo "▶ Build ($PROJECT_TYPE)"
 case "$PROJECT_TYPE" in
   flutter)
     BASE_HREF="/portfolio_site/$PROJECT_PATH/"
-    (cd "$PROJECT_DIR" && flutter build web --base-href "$BASE_HREF")
-    BUILD_DIR="$PROJECT_DIR/build/web"
-    ;;
+  (
+    cd "$PROJECT_DIR" && \
+    flutter clean && \
+    flutter build web \
+    --pwa-strategy=none \
+    --base-href "$BASE_HREF" \
+    --dart-define=APP_SECRET_KEY=pVxVM2Sg%2BHNTco6BI31bUZwwKiNI%2F%2FwIo27GZfCVMBpKhkdJMcnYBK2mtYBWcLIMwzW80UXNTYfutp3etW9hjA%3D%3D
+  )
+  BUILD_DIR="$PROJECT_DIR/build/web"
+  ;;
   react)
-    (cd "$PROJECT_DIR" && npm install && npm run build)
+    (
+      cd "$PROJECT_DIR" && \
+      npm install && \
+      npm run build
+    )
     BUILD_DIR="$PROJECT_DIR/build"
     ;;
   *)
@@ -65,7 +76,7 @@ git checkout "$DEPLOY_BRANCH"
 
 mkdir -p "$DEPLOY_TARGET"
 
-echo "▶ Copy (overwrite only)"
+echo "▶ Copy (overwrite only, no delete)"
 cp -R "$BUILD_DIR"/. "$DEPLOY_TARGET/"
 
 git add "$DEPLOY_TARGET"
@@ -74,6 +85,4 @@ git push origin "$DEPLOY_BRANCH"
 
 git checkout main
 
-
-# set -e
-# ./scripts/deploy.sh mini_project/saju
+echo "✅ Deploy complete"
