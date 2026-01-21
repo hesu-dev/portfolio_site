@@ -7,7 +7,7 @@ import 'package:saju/providers/manse_form_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb) {
+  if (!kIsWeb || kDebugMode) {
     await dotenv.load(fileName: ".env");
   }
   runApp(
