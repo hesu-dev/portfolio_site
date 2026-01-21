@@ -31,7 +31,6 @@ case "$PROJECT_TYPE" in
   flutter)
     BASE_HREF="/portfolio_site/$PROJECT_PATH/"
     cd "$PROJECT_DIR"
-    flutter clean
     flutter build web \
       --pwa-strategy=none \
       --base-href "$BASE_HREF" \
@@ -52,21 +51,13 @@ case "$PROJECT_TYPE" in
     ;;
 esac
 
-### ===== 빌드 결과 검증 (핵심) =====
+### ===== 빌드 결과 검증 =====
 if [ ! -f "$BUILD_DIR/index.html" ]; then
-  echo "❌ 빌드 결과 아님"
-  exit 1
-fi
-
-if [ -d "$BUILD_DIR/lib" ] || [ -f "$BUILD_DIR/pubspec.yaml" ]; then
-  echo "❌ 소스 감지됨 → 중단"
+  echo "❌ 빌드 산출물 없음"
   exit 1
 fi
 
 echo "✅ Build verified"
-
-### ===== main 보호 =====
-git stash push -u -m "deploy-temp"
 
 ### ===== gh-pages 배포 =====
 git checkout "$DEPLOY_BRANCH"
@@ -82,10 +73,9 @@ git add "$DEPLOY_TARGET"
 git commit -m "deploy($PROJECT_TYPE): $PROJECT_PATH"
 git push origin "$DEPLOY_BRANCH"
 
-### ===== 원상복구 =====
 git checkout main
-git stash pop
 
-echo "✅ Deploy complete (checkout-safe)"
+echo "✅ Deploy complete (no stash, no delete accident)"
+
 
 # ./scripts/deploy.sh mini_project/saju
