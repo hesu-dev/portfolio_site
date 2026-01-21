@@ -50,3 +50,6 @@ game/*/Assets/AddressableAssetsData/*/*.bin*
 # Android StreamingAssets 자동 생성물
 game/*/Assets/StreamingAssets/aa/
 game/*/Assets/StreamingAssets/aa.meta
+
+#디플로이
+scripts/*
