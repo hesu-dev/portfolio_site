@@ -4,6 +4,7 @@ set -e
 ### ===== 설정 =====
 DEPLOY_BRANCH="gh-pages"
 ROOT_DIR=$(git rev-parse --show-toplevel)
+WORKTREE_DIR="$ROOT_DIR/.gh-pages-worktree"
 
 PROJECT_PATH=$1
 if [ -z "$PROJECT_PATH" ]; then
@@ -69,30 +70,34 @@ if [ ! -d "$BUILD_DIR" ]; then
   exit 1
 fi
 
-### ===== 배포 =====
-echo "▶ Deploy to $DEPLOY_BRANCH"
-
-git checkout "$DEPLOY_BRANCH"
-
-# 🔴 Flutter 프로젝트만 해당 디렉토리 clean (하얀 화면 방지 핵심)
-if [ "$PROJECT_TYPE" = "flutter" ]; then
-  echo "▶ Clean old flutter deploy (only target dir)"
-  rm -rf "$DEPLOY_TARGET"
+### ===== gh-pages worktree 준비 =====
+if [ ! -d "$WORKTREE_DIR" ]; then
+  echo "▶ Create gh-pages worktree"
+  git worktree add "$WORKTREE_DIR" "$DEPLOY_BRANCH"
+else
+  echo "▶ Reuse existing gh-pages worktree"
 fi
 
-mkdir -p "$DEPLOY_TARGET"
+### ===== 파일 배포 (git 무관) =====
+TARGET_DIR="$WORKTREE_DIR/$DEPLOY_TARGET"
 
-echo "▶ Copy build output"
-cp -R "$BUILD_DIR"/. "$DEPLOY_TARGET/"
+echo "▶ Sync files to gh-pages worktree"
+rm -rf "$TARGET_DIR"
+mkdir -p "$TARGET_DIR"
 
-git add "$DEPLOY_TARGET"
-git commit -m "deploy($PROJECT_TYPE): $PROJECT_PATH"
-git push origin "$DEPLOY_BRANCH"
+rsync -av --delete "$BUILD_DIR"/ "$TARGET_DIR/"
 
-git checkout main
-
-echo "✅ Deploy complete"
-
+echo
+echo "✅ Deploy files prepared."
+echo "ℹ️  이제 사람이 직접 커밋/푸시 하세요:"
+echo
+echo "    cd .gh-pages-worktree"
+echo "    git status"
+echo "    git add $DEPLOY_TARGET"
+echo "    git commit -m \"deploy($PROJECT_TYPE): $PROJECT_PATH\""
+echo "    git push origin $DEPLOY_BRANCH"
+echo
+echo "🚫 이 스크립트는 git commit / push를 절대 수행하지 않습니다."
 
 
 # ./scripts/deploy.sh mini_project/saju
