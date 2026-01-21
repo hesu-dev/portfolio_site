@@ -1,7 +1,5 @@
 // ignore_for_file: unused_element
 
-import 'package:saju/domain/enums/sky.dart';
-
 enum AnimalTitleType {
   leader, // 주도·권위형
   runner, // 추진·행동형

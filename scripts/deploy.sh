@@ -45,7 +45,8 @@ case "$PROJECT_TYPE" in
       flutter clean && \
       flutter build web \
         --pwa-strategy=none \
-        --base-href "$BASE_HREF" 
+        --base-href "$BASE_HREF" \
+        --dart-define=API_BASE_URL=https://sunell.dothome.co.kr/api
     )
     BUILD_DIR="$PROJECT_DIR/build/web"
     ;;
@@ -92,3 +93,6 @@ git checkout main
 
 echo "✅ Deploy complete"
 
+
+
+# ./scripts/deploy.sh mini_project/saju
