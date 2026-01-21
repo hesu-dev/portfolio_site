@@ -53,3 +53,6 @@ game/*/Assets/StreamingAssets/aa.meta
 
 #디플로이
 scripts/*
+
+# gh-pages worktree (deploy temp)
+.gh-pages-worktree/
