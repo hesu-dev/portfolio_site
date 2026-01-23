@@ -15,6 +15,10 @@
 /game/*/[Mm]emoryCaptures/
 /game/*/[Rr]ecordings/
 
+/game/*/.vs/
+/game/*/.gradle/
+/game/*/sysinfo.txt
+
 # IDE
 .vs/
 .gradle/
