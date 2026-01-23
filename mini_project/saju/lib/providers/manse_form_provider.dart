@@ -32,13 +32,13 @@ class ManseFormProvider extends ChangeNotifier {
   void notify() => notifyListeners();
 
   void fillTestData() {
-    name = '테스트네임';
+    name = '테스트';
     gender = Gender.female;
-    birthDate = DateTime(1990, 12, 06);
+    birthDate = DateTime(1994, 12, 06);
     birthTime = const TimeOfDay(hour: 05, minute: 0);
     timeUnknown = false;
     isYajaJoja = false;
-    city = '부산특별시';
+    city = '서울특별시';
 
     notifyListeners();
   }

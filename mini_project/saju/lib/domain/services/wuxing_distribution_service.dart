@@ -63,3 +63,26 @@ class WuXingDistributionService {
     }
   }
 }
+
+//억부용신(간이)
+WuXing getEokBuYongShin(WuXing max) {
+  switch (max) {
+    case WuXing.wood:
+      return WuXing.metal;
+    case WuXing.fire:
+      return WuXing.water;
+    case WuXing.earth:
+      return WuXing.wood;
+    case WuXing.metal:
+      return WuXing.fire;
+    case WuXing.water:
+      return WuXing.earth;
+  }
+}
+
+//조후용신(간이)
+WuXing? getJoHuYongShin(WuXing min) {
+  if (min == WuXing.water) return WuXing.fire;
+  if (min == WuXing.fire) return WuXing.water;
+  return null; // 토/목/금은 조후로 잘 안 씀
+}

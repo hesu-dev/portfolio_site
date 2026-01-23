@@ -11,33 +11,37 @@ import '../../providers/manse_form_provider.dart';
 
 class MansePage extends StatelessWidget {
   const MansePage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFAF8F5),
       appBar: AppBar(title: const Text('만세력 사주 보기')),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            if (!kDebugMode)
-              TextButton(
-                onPressed: () {
-                  context.read<ManseFormProvider>().fillTestData();
-                },
-                child: const Text('⚡ 테스트 자동 입력'),
-              ),
-            const ManseNameField(),
-            const SizedBox(height: 16),
-            const ManseGenderSelector(),
-            const SizedBox(height: 16),
-            const ManseBirthDateTime(),
-            const SizedBox(height: 16),
-            const ManseCityField(),
-            const SizedBox(height: 24),
-            const ManseSubmitButton(),
-          ],
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                if (kDebugMode)
+                  TextButton(
+                    onPressed: () {
+                      context.read<ManseFormProvider>().fillTestData();
+                    },
+                    child: const Text('⚡ 테스트 자동 입력'),
+                  ),
+                const ManseNameField(),
+                const SizedBox(height: 16),
+                const ManseGenderSelector(),
+                const SizedBox(height: 16),
+                const ManseBirthDateTime(),
+                const SizedBox(height: 16),
+                const ManseCityField(),
+                const SizedBox(height: 24),
+                const ManseSubmitButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );

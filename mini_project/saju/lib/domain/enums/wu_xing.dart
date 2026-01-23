@@ -13,3 +13,7 @@ enum WuXing {
 
   const WuXing(this.korean, this.chinese, this.color);
 }
+
+extension WuXingDisplay on WuXing {
+  String get display => '$korean($chinese)';
+}

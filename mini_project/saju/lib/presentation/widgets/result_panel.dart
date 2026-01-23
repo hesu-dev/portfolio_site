@@ -4,10 +4,12 @@ import 'package:saju/domain/enums/wu_xing.dart';
 import 'package:saju/domain/models/animal_title.dart';
 import 'package:saju/domain/models/pillar_dto.dart';
 import 'package:saju/presentation/sheets/animal_info_sheet.dart';
+import 'package:saju/presentation/sheets/sheet.dart';
 import 'package:saju/presentation/widgets/result/input_summary_view.dart';
 import 'package:saju/presentation/widgets/result/pillar_table_view.dart';
 import 'package:saju/presentation/widgets/result/wuxing_chart_view.dart';
 import 'package:saju/presentation/widgets/result/wuxing_table_view.dart';
+import 'package:saju/presentation/widgets/result/yin_yang_painter.dart';
 import 'package:saju/providers/manse_form_provider.dart';
 
 import '../../domain/services/wuxing_distribution_service.dart';
@@ -38,15 +40,23 @@ class ResultPanel extends StatelessWidget {
     );
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _section(_profileHeader(animalTitle, context)),
-          _section(PillarTableView(result: result)),
-          _section(_wuxingSection(wuxingDist)),
-          _section(_yinYangSection(yinYang)),
-        ],
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 780),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _section(_profileHeader(animalTitle, context)),
+                _section(PillarTableView(result: result)),
+                _section(_wuxingSection(wuxingDist, yinYang)),
+                _section(yongshinWidget(wuxingDist, context)),
+                // _section(_yinYangSection(yinYang)),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -87,20 +97,24 @@ class ResultPanel extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  // '${animalTitle.korean}(${animalTitle.chinese})'
-                  '${result.pillars.day.sky}${result.pillars.day.ground}(${animalTitle.koreanHanja})의 당신은..',
-                  style: const TextStyle(color: Colors.black54),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.help_outline),
-                  onPressed: () => AnimalInfoSheet(),
+                Row(
+                  children: [
+                    Text(
+                      // '${animalTitle.korean}(${animalTitle.chinese})'
+                      '(${result.pillars.day.sky}${result.pillars.day.ground}/${animalTitle.koreanHanja})의 당신은..',
+                      style: const TextStyle(color: Colors.black54),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.help_outline),
+                      onPressed: () => AnimalInfoSheet(),
+                    ),
+                  ],
                 ),
 
-                Text(
-                  animalTitle.meaning,
-                  style: const TextStyle(color: Colors.black54, fontSize: 10),
-                ),
+                // Text(
+                //   animalTitle.meaning,
+                //   style: const TextStyle(color: Colors.black54, fontSize: 10),
+                // ),
               ],
             ),
           ],
@@ -125,23 +139,50 @@ class ResultPanel extends StatelessWidget {
   // =========================
   // 3. 오행 분포
   // =========================
-  Widget _wuxingSection(WuXingDistribution dist) {
+  Widget _wuxingSection(WuXingDistribution dist, YinYangBalance b) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
           '오행 분포',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
-        Center(
-          child: WuXingDonutChart(
-            percent: dist.percent,
-            centerLabel: _dominantWuXing(dist.percent),
-          ),
+        Row(
+          children: [
+            Center(
+              child: WuXingDonutChart(
+                percent: dist.percent,
+                centerLabel: _dominantWuXing(dist.percent),
+              ),
+            ),
+            const SizedBox(width: 30),
+            Center(
+              child: YinYangCircle(
+                balance: YinYangBalance(
+                  yin: b.yinPercent.toInt(),
+                  yang: b.yangPercent.toInt(),
+                  yinPercent: b.yinPercent,
+                  yangPercent: b.yangPercent,
+                  judgment: b.judgment,
+                ),
+                // yin: b.yinPercent.toDouble() ?? 0,
+                // yang: b.yinPercent,
+              ),
+            ),
+            const SizedBox(width: 20),
+          ],
         ),
         const SizedBox(height: 16),
-        WuXingTableView(percent: dist.percent),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            WuXingTableView(percent: dist.percent),
+            const SizedBox(width: 20),
+            WuXingTableView(percent: dist.percent),
+          ],
+        ),
       ],
     );
   }
@@ -172,6 +213,94 @@ class ResultPanel extends StatelessWidget {
         Text(
           '판정: ${b.judgment}',
           style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
+  // =========================
+  // 5. 용신
+  // =========================
+
+  Widget yongshinWidget(WuXingDistribution dist, BuildContext context) {
+    WuXing maxWuXing = dist.percent.entries
+        .reduce((a, b) => a.value > b.value ? a : b)
+        .key;
+    WuXing minWuXing = dist.percent.entries
+        .reduce((a, b) => a.value < b.value ? a : b)
+        .key;
+
+    final eokBu = getEokBuYongShin(maxWuXing);
+    final joHu = getJoHuYongShin(minWuXing);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Text(
+              '용신',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: 28,
+              height: 28,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFFEDEDED),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.search, size: 18, color: Colors.black54),
+                onPressed: () {
+                  showYongshinInfo(context);
+                },
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 12),
+
+        // ===== 용신 박스 =====
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFDDDDDD), width: 1.2),
+          ),
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(fontSize: 16, color: Colors.black87),
+              children: [
+                TextSpan(
+                  text: eokBu.display,
+                  style: TextStyle(
+                    color: eokBu.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: '(조후용신)  ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
+                TextSpan(text: ' |  '),
+                TextSpan(
+                  text: joHu?.display,
+                  style: TextStyle(
+                    color: eokBu.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: '(억부용신)',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );

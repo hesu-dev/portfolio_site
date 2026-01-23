@@ -8,6 +8,10 @@ class CalendarApi {
 
   /// PHP 프록시를 통해 XML 문자열을 그대로 가져온다
   Future<String> fetchCalendarXml(ManseRequestDto req) async {
+    if (true) {
+      return _mockCalendarXml;
+    }
+
     final type = (req.calendarType == CalendarType.solar) ? 'solar' : 'lunar';
 
     final uri = Uri.parse(
@@ -24,7 +28,39 @@ class CalendarApi {
       throw Exception('Calendar API 호출 실패: ${resp.statusCode}');
     }
 
-    // PHP에서 내려주는 XML은 UTF-8 기준
     return utf8.decode(resp.bodyBytes);
   }
 }
+
+const String _mockCalendarXml = '''
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response>
+  <header>
+    <resultCode>00</resultCode>
+    <resultMsg>NORMAL SERVICE.</resultMsg>
+  </header>
+  <body>
+    <items>
+      <item>
+        <lunDay>20</lunDay>
+        <lunIljin>을사(乙巳)</lunIljin>
+        <lunLeapmonth>평</lunLeapmonth>
+        <lunMonth>10</lunMonth>
+        <lunNday>30</lunNday>
+        <lunSecha>경오(庚午)</lunSecha>
+        <lunWolgeon>정해(丁亥)</lunWolgeon>
+        <lunYear>1990</lunYear>
+        <solDay>06</solDay>
+        <solJd>2448232</solJd>
+        <solLeapyear>평</solLeapyear>
+        <solMonth>12</solMonth>
+        <solWeek>목</solWeek>
+        <solYear>1990</solYear>
+      </item>
+    </items>
+    <numOfRows>10</numOfRows>
+    <pageNo>1</pageNo>
+    <totalCount>1</totalCount>
+  </body>
+</response>
+''';

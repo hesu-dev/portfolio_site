@@ -47,108 +47,125 @@ class ManseConfirmPage extends StatelessWidget {
         //   SizedBox(width: 8),
         // ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 12),
-            const Text(
-              '입력하신 프로필을\n확인해주세요.',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            _infoCard(Icons.person, '${form.name} / $genderText'),
-            const SizedBox(height: 12),
-            _infoCard(Icons.calendar_today, '양 ${form.formattedBirthDateTime}'),
-            const SizedBox(height: 12),
-            _infoCard(Icons.location_on, form.city ?? ''),
-
-            const SizedBox(height: 12),
-
-            // 🔔 지역 보정 안내
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFE8B3),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: const Text(
-                '입력하신 지역 정보에 따라 -32분을 보정합니다.',
-                style: TextStyle(fontSize: 14),
-              ),
-            ),
-
-            const Spacer(),
-
-            // ▶ 만세력 보러가기
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFFD572),
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(26),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 12),
+                const Text(
+                  '입력하신 프로필을\n확인해주세요.',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    height: 1.4,
                   ),
-                  elevation: 0,
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider.value(
-                            value: context.read<ManseFormProvider>(),
-                          ),
-                          ChangeNotifierProvider(
-                            create: (_) => ManseResultProvider(),
-                          ),
-                        ],
-                        child: const ManseLoadingPage(),
+                const SizedBox(height: 24),
+
+                _infoCard(Icons.person, '${form.name} / $genderText'),
+                const SizedBox(height: 12),
+                _infoCard(
+                  Icons.calendar_today,
+                  '양 ${form.formattedBirthDateTime}',
+                ),
+                const SizedBox(height: 12),
+                _infoCard(Icons.location_on, form.city ?? ''),
+
+                const SizedBox(height: 12),
+
+                // 🔔 지역 보정 안내
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFE8B3),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: const Text(
+                    '입력하신 지역 정보에 따라 -32분을 보정합니다.',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+
+                const Spacer(),
+
+                // ▶ 만세력 보러가기
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFFD572),
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(26),
                       ),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
+                      elevation: 0,
                     ),
-                  );
-                },
-                child: const Text(
-                  '만세력 보러가기',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            // ▶ 프로필 수정하기
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE5E5E5),
-                  foregroundColor: Colors.black54,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(26),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider.value(
+                                value: context.read<ManseFormProvider>(),
+                              ),
+                              ChangeNotifierProvider(
+                                create: (_) => ManseResultProvider(),
+                              ),
+                            ],
+                            child: const ManseLoadingPage(),
+                          ),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      '만세력 보러가기',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  elevation: 0,
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('프로필 수정하기', style: TextStyle(fontSize: 16)),
-              ),
+
+                const SizedBox(height: 12),
+
+                // ▶ 프로필 수정하기
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFE5E5E5),
+                      foregroundColor: Colors.black54,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      '프로필 수정하기',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

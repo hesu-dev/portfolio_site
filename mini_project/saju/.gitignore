@@ -45,5 +45,6 @@ app.*.map.json
 /android/app/release
 
 
+
 # 환경설정
 .env
