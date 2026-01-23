@@ -1,0 +1,48 @@
+
+Dian_back.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+얼굴
+  rotate: false
+  xy: 2, 105
+  size: 383, 405
+  orig: 383, 405
+  offset: 0, 0
+  index: -1
+카멜롯_몸
+  rotate: false
+  xy: 387, 221
+  size: 196, 289
+  orig: 196, 289
+  offset: 0, 0
+  index: -1
+카멜롯_오른발
+  rotate: true
+  xy: 2, 2
+  size: 101, 157
+  orig: 101, 157
+  offset: 0, 0
+  index: -1
+카멜롯_오른팔
+  rotate: true
+  xy: 387, 137
+  size: 82, 160
+  orig: 82, 160
+  offset: 0, 0
+  index: -1
+카멜롯_왼발
+  rotate: true
+  xy: 161, 25
+  size: 78, 118
+  orig: 78, 118
+  offset: 0, 0
+  index: -1
+카멜롯_왼팔
+  rotate: false
+  xy: 585, 367
+  size: 66, 143
+  orig: 66, 143
+  offset: 0, 0
+  index: -1

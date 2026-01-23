@@ -1,0 +1,55 @@
+
+Lahvien_fornt.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+렌조_오른팔
+  rotate: false
+  xy: 395, 193
+  size: 93, 167
+  orig: 93, 167
+  offset: 0, 0
+  index: -1
+로렌조_머리머리
+  rotate: false
+  xy: 2, 127
+  size: 391, 381
+  orig: 391, 381
+  offset: 0, 0
+  index: -1
+카멜롯_앞상체
+  rotate: false
+  xy: 2, 2
+  size: 145, 123
+  orig: 145, 123
+  offset: 0, 0
+  index: -1
+카멜롯_앞오른다
+  rotate: true
+  xy: 572, 410
+  size: 98, 152
+  orig: 98, 152
+  offset: 0, 0
+  index: -1
+카멜롯_앞왼다리
+  rotate: false
+  xy: 490, 251
+  size: 70, 109
+  orig: 70, 109
+  offset: 0, 0
+  index: -1
+카멜롯_앞왼팔
+  rotate: true
+  xy: 149, 56
+  size: 69, 144
+  orig: 69, 144
+  offset: 0, 0
+  index: -1
+카멜롯_앞하체
+  rotate: false
+  xy: 395, 362
+  size: 175, 146
+  orig: 175, 146
+  offset: 0, 0
+  index: -1

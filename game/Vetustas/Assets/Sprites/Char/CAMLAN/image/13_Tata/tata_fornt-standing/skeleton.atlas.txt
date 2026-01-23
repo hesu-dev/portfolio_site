@@ -1,0 +1,48 @@
+
+skeleton.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+앞_머리
+  rotate: false
+  xy: 2, 2
+  size: 432, 450
+  orig: 432, 450
+  offset: 0, 0
+  index: -1
+앞_몸체
+  rotate: false
+  xy: 436, 226
+  size: 169, 226
+  orig: 169, 226
+  offset: 0, 0
+  index: -1
+앞_오른발
+  rotate: false
+  xy: 436, 41
+  size: 100, 183
+  orig: 100, 183
+  offset: 0, 0
+  index: -1
+앞_오른팔
+  rotate: false
+  xy: 607, 296
+  size: 90, 156
+  orig: 90, 156
+  offset: 0, 0
+  index: -1
+앞_왼발
+  rotate: false
+  xy: 699, 313
+  size: 75, 139
+  orig: 75, 139
+  offset: 0, 0
+  index: -1
+앞_왼팔
+  rotate: true
+  xy: 776, 380
+  size: 72, 140
+  orig: 72, 140
+  offset: 0, 0
+  index: -1

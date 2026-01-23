@@ -1,0 +1,48 @@
+
+skeleton.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+앞_머리_틸데
+  rotate: false
+  xy: 2, 102
+  size: 387, 373
+  orig: 387, 373
+  offset: 0, 0
+  index: -1
+앞_몸_틸데
+  rotate: false
+  xy: 391, 237
+  size: 174, 238
+  orig: 174, 238
+  offset: 0, 0
+  index: -1
+캄란_앞오른다
+  rotate: true
+  xy: 2, 2
+  size: 98, 152
+  orig: 98, 152
+  offset: 0, 0
+  index: -1
+캄란_앞오른팔
+  rotate: true
+  xy: 391, 144
+  size: 91, 158
+  orig: 91, 158
+  offset: 0, 0
+  index: -1
+캄란_앞왼다리
+  rotate: true
+  xy: 156, 31
+  size: 69, 110
+  orig: 69, 110
+  offset: 0, 0
+  index: -1
+캄란_앞왼팔
+  rotate: false
+  xy: 567, 335
+  size: 69, 140
+  orig: 69, 140
+  offset: 0, 0
+  index: -1

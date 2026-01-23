@@ -1,0 +1,62 @@
+
+Irusa_fornt.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+꽁지
+  rotate: true
+  xy: 2, 73
+  size: 72, 297
+  orig: 72, 297
+  offset: 0, 0
+  index: -1
+머리선
+  rotate: false
+  xy: 2, 147
+  size: 385, 363
+  orig: 385, 363
+  offset: 0, 0
+  index: -1
+카멜롯_앞상체
+  rotate: false
+  xy: 389, 239
+  size: 145, 123
+  orig: 145, 123
+  offset: 0, 0
+  index: -1
+카멜롯_앞오른다
+  rotate: true
+  xy: 566, 412
+  size: 98, 152
+  orig: 98, 152
+  offset: 0, 0
+  index: -1
+카멜롯_앞오른팔
+  rotate: true
+  xy: 720, 427
+  size: 83, 162
+  orig: 83, 162
+  offset: 0, 0
+  index: -1
+카멜롯_앞왼다리
+  rotate: true
+  xy: 389, 167
+  size: 70, 109
+  orig: 70, 109
+  offset: 0, 0
+  index: -1
+카멜롯_앞왼팔
+  rotate: true
+  xy: 2, 2
+  size: 69, 144
+  orig: 69, 144
+  offset: 0, 0
+  index: -1
+카멜롯_앞하체
+  rotate: false
+  xy: 389, 364
+  size: 175, 146
+  orig: 175, 146
+  offset: 0, 0
+  index: -1

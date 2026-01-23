@@ -1,0 +1,48 @@
+
+Igraine_fornt.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+머리선
+  rotate: false
+  xy: 2, 73
+  size: 376, 427
+  orig: 376, 427
+  offset: 0, 0
+  index: -1
+몸체
+  rotate: false
+  xy: 380, 248
+  size: 196, 252
+  orig: 196, 252
+  offset: 0, 0
+  index: -1
+오른발
+  rotate: false
+  xy: 380, 95
+  size: 96, 151
+  orig: 96, 151
+  offset: 0, 0
+  index: -1
+오른팔
+  rotate: false
+  xy: 578, 342
+  size: 89, 158
+  orig: 89, 158
+  offset: 0, 0
+  index: -1
+왼발
+  rotate: false
+  xy: 478, 136
+  size: 69, 110
+  orig: 69, 110
+  offset: 0, 0
+  index: -1
+왼팔
+  rotate: true
+  xy: 2, 2
+  size: 69, 141
+  orig: 69, 141
+  offset: 0, 0
+  index: -1
