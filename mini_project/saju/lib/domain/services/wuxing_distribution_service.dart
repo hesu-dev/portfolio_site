@@ -80,9 +80,63 @@ WuXing getEokBuYongShin(WuXing max) {
   }
 }
 
+//통관용신(간이)
+WuXing? getTongGwanYongShin(WuXing max, WuXing min) {
+  // 목 ↔ 토 → 화
+  if ((max == WuXing.wood && min == WuXing.earth) ||
+      (max == WuXing.earth && min == WuXing.wood)) {
+    return WuXing.fire;
+  }
+
+  // 화 ↔ 금 → 토
+  if ((max == WuXing.fire && min == WuXing.metal) ||
+      (max == WuXing.metal && min == WuXing.fire)) {
+    return WuXing.earth;
+  }
+
+  // 금 ↔ 목 → 수
+  if ((max == WuXing.metal && min == WuXing.wood) ||
+      (max == WuXing.wood && min == WuXing.metal)) {
+    return WuXing.water;
+  }
+
+  // 수 ↔ 화 → 목
+  if ((max == WuXing.water && min == WuXing.fire) ||
+      (max == WuXing.fire && min == WuXing.water)) {
+    return WuXing.wood;
+  }
+
+  // 토 ↔ 수 → 금
+  if ((max == WuXing.earth && min == WuXing.water) ||
+      (max == WuXing.water && min == WuXing.earth)) {
+    return WuXing.metal;
+  }
+
+  return null;
+}
+
 //조후용신(간이)
 WuXing? getJoHuYongShin(WuXing min) {
   if (min == WuXing.water) return WuXing.fire;
   if (min == WuXing.fire) return WuXing.water;
   return null; // 토/목/금은 조후로 잘 안 씀
+}
+
+//종용신(간이)
+bool isExtreme(Map<WuXing, int> count) {
+  final values = count.values.toList()..sort();
+  return values.last >= 4 && values.first == 0;
+}
+
+class YongShinResult {
+  final WuXing? eokBu;
+  final WuXing? tongGwan;
+  final WuXing? joHu;
+  final WuXing? jongYong;
+
+  YongShinResult({this.eokBu, this.tongGwan, this.joHu, this.jongYong});
+}
+
+WuXing getJongYongShin(WuXing max) {
+  return max;
 }

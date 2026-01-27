@@ -1,17 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:saju/domain/enums/wu_xing.dart';
 import 'package:saju/domain/models/animal_title.dart';
 import 'package:saju/domain/models/pillar_dto.dart';
 import 'package:saju/presentation/sheets/animal_info_sheet.dart';
 import 'package:saju/presentation/sheets/sheet.dart';
+import 'package:saju/presentation/widgets/icon_data.dart';
 import 'package:saju/presentation/widgets/result/input_summary_view.dart';
 import 'package:saju/presentation/widgets/result/pillar_table_view.dart';
 import 'package:saju/presentation/widgets/result/wuxing_chart_view.dart';
 import 'package:saju/presentation/widgets/result/wuxing_table_view.dart';
 import 'package:saju/presentation/widgets/result/yin_yang_painter.dart';
 import 'package:saju/providers/manse_form_provider.dart';
-
 import '../../domain/services/wuxing_distribution_service.dart';
 import '../../domain/services/yin_yang_balance_service.dart';
 import '../../domain/services/animal_title_service.dart';
@@ -52,7 +56,9 @@ class ResultPanel extends StatelessWidget {
                 _section(PillarTableView(result: result)),
                 _section(_wuxingSection(wuxingDist, yinYang)),
                 _section(yongshinWidget(wuxingDist, context)),
-                // _section(_yinYangSection(yinYang)),
+                _section(_yinYangSection(yinYang)),
+                _section(_shareSection(context)),
+                _section(_footerSection()),
               ],
             ),
           ),
@@ -157,20 +163,6 @@ class ResultPanel extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 30),
-            Center(
-              child: YinYangCircle(
-                balance: YinYangBalance(
-                  yin: b.yinPercent.toInt(),
-                  yang: b.yangPercent.toInt(),
-                  yinPercent: b.yinPercent,
-                  yangPercent: b.yangPercent,
-                  judgment: b.judgment,
-                ),
-                // yin: b.yinPercent.toDouble() ?? 0,
-                // yang: b.yinPercent,
-              ),
-            ),
-            const SizedBox(width: 20),
           ],
         ),
         const SizedBox(height: 16),
@@ -200,20 +192,29 @@ class ResultPanel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(width: 20),
         const Text(
           '음양 균형',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
+        Center(
+          child: YinYangCircle(
+            balance: YinYangBalance(
+              yin: b.yinPercent.toInt(),
+              yang: b.yangPercent.toInt(),
+              yinPercent: b.yinPercent,
+              yangPercent: b.yangPercent,
+              judgment: b.judgment,
+              keyPoints: b.keyPoints,
+              comment: b.comment,
+            ),
+          ),
+        ),
+
         const SizedBox(height: 12),
-        Text(
-          '양 ${b.yangPercent.toStringAsFixed(0)}% / '
-          '음 ${b.yinPercent.toStringAsFixed(0)}%',
-        ),
+        Text(b.keyPoints, style: const TextStyle(fontSize: 14)),
         const SizedBox(height: 4),
-        Text(
-          '판정: ${b.judgment}',
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
+        Text(b.comment, style: const TextStyle(fontWeight: FontWeight.w600)),
       ],
     );
   }
@@ -221,21 +222,38 @@ class ResultPanel extends StatelessWidget {
   // =========================
   // 5. 용신
   // =========================
-
   Widget yongshinWidget(WuXingDistribution dist, BuildContext context) {
-    WuXing maxWuXing = dist.percent.entries
+    final maxWuXing = dist.percent.entries
         .reduce((a, b) => a.value > b.value ? a : b)
         .key;
-    WuXing minWuXing = dist.percent.entries
+
+    final minWuXing = dist.percent.entries
         .reduce((a, b) => a.value < b.value ? a : b)
         .key;
 
     final eokBu = getEokBuYongShin(maxWuXing);
-    final joHu = getJoHuYongShin(minWuXing);
+    final tongGwan = getTongGwanYongShin(maxWuXing, minWuXing);
+    final joHu = getJoHuYongShin(maxWuXing);
+    final isExtremeCase = isExtreme(dist.count);
+    final jongYong = isExtremeCase ? getJongYongShin(maxWuXing) : null;
+
+    TextSpan label(String text) => TextSpan(
+      text: text,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+    );
+
+    TextSpan value(WuXing? wx) => TextSpan(
+      text: wx?.display ?? '해당 없음',
+      style: TextStyle(
+        color: wx?.color ?? Colors.black38,
+        fontWeight: FontWeight.bold,
+      ),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ===== 제목 =====
         Row(
           children: [
             const Text(
@@ -251,10 +269,9 @@ class ResultPanel extends StatelessWidget {
                 color: Color(0xFFEDEDED),
               ),
               child: IconButton(
+                padding: EdgeInsets.zero,
                 icon: const Icon(Icons.search, size: 18, color: Colors.black54),
-                onPressed: () {
-                  showYongshinInfo(context);
-                },
+                onPressed: () => showYongshinInfo(context),
               ),
             ),
           ],
@@ -273,36 +290,129 @@ class ResultPanel extends StatelessWidget {
           ),
           child: RichText(
             text: TextSpan(
-              style: TextStyle(fontSize: 16, color: Colors.black87),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
               children: [
-                TextSpan(
-                  text: eokBu.display,
-                  style: TextStyle(
-                    color: eokBu.color,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: '(조후용신)  ',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-                TextSpan(text: ' |  '),
-                TextSpan(
-                  text: joHu?.display,
-                  style: TextStyle(
-                    color: eokBu.color,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: '(억부용신)',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                ),
+                // ===== 종용신 (극단일 때 최우선) =====
+                if (jongYong != null) ...[value(jongYong), label(' (종용신)\n')],
+
+                // ===== 억부용신 =====
+                value(eokBu),
+                label(' (억부용신)\n'),
+
+                // ===== 통관용신 =====
+                value(tongGwan),
+                label(' (통관용신)\n'),
+
+                // ===== 조후용신 =====
+                value(joHu),
+                label(' (조후용신)'),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  // =========================
+  // 6. 공유
+  // =========================
+  Widget _shareSection(BuildContext context) {
+    return Center(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(40),
+        onTap: () => shareCurrentPage(context),
+        child: Column(
+          children: const [
+            CircleAvatar(
+              radius: 28,
+              backgroundColor: Color(0xFFEDEDED),
+              child: Icon(Icons.share, color: Colors.black87),
+            ),
+            SizedBox(height: 8),
+            Text('공유', style: TextStyle(fontWeight: FontWeight.w600)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _footerSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          'by Nell - 만세력 1.0',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        const SizedBox(height: 6),
+        const Text('고객문의 : hs0647@naver.com', style: TextStyle(fontSize: 12)),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            socialIcon(icon: Icons.camera_alt, type: SocialType.instagram),
+            socialIcon(icon: Icons.business, type: SocialType.linkedin),
+            socialIcon(icon: Icons.article, type: SocialType.blog),
+            // socialIcon(icon: Icons.alternate_email, type: SocialType.twitter),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Future<void> shareCurrentPage(BuildContext context) async {
+    final url = Uri.base.toString();
+    await Clipboard.setData(ClipboardData(text: url));
+
+    if (!context.mounted) return;
+
+    Timer? autoCloseTimer;
+
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withOpacity(0.1),
+      isDismissible: true,
+      enableDrag: false,
+      builder: (_) {
+        autoCloseTimer = Timer(const Duration(milliseconds: 700), () {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+        });
+        return const _CopyDoneBottomSheet();
+      },
+    );
+    autoCloseTimer?.cancel();
+  }
+}
+
+class _CopyDoneBottomSheet extends StatelessWidget {
+  const _CopyDoneBottomSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Center(
+        child: Container(
+          width: 260,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.black87,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.check_circle, color: Colors.greenAccent, size: 20),
+              SizedBox(width: 8),
+              Text('링크가 복사되었습니다', style: TextStyle(color: Colors.white)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
