@@ -4,6 +4,9 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+/game/*/
+
+
 /game/*/[Ll]ibrary/
 /game/*/[Tt]emp/
 /game/*/[Oo]bj/
