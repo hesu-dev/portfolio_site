@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../core/constants/app_colors.dart';
 import 'widgets/onboarding_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -86,6 +87,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_currentPage == 2) {
+                      // 온보딩 완료 처리
+                      Hive.box('settings').put('has_seen_onboarding', true);
                       context.go('/');
                     } else {
                       _pageController.nextPage(

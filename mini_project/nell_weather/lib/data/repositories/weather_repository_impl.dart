@@ -7,25 +7,39 @@ class WeatherRepositoryImpl implements WeatherRepository {
 
   WeatherRepositoryImpl(this._apiService);
 
+
   @override
-  Future<WeatherModel> fetchWeather(String location) async {
+  Future<WeatherContext> fetchWeather(String location) async {
     try {
-      // Fetch data in parallel for efficiency
+      // 2.5 API requires fetching Current and Forecast separately
       final results = await Future.wait([
         _apiService.getCurrentWeather(location),
         _apiService.getForecast(location),
       ]);
 
-      final currentData = results[0];
-      final forecastData = results[1];
-
-      return WeatherModel.fromApi(
-        currentData: currentData,
-        forecastData: forecastData,
+      return WeatherContext.from25Api(
+        currentData: results[0],
+        forecastData: results[1],
       );
     } catch (e) {
-      // Re-throw or handle error suitable for the UI
       throw Exception("Repository Error: $e");
+    }
+  }
+
+  @override
+  Future<WeatherContext> fetchWeatherByCoordinates(double lat, double lon) async {
+    try {
+      final results = await Future.wait([
+        _apiService.getCurrentWeatherByCoordinates(lat, lon),
+        _apiService.getForecastByCoordinates(lat, lon),
+      ]);
+
+      return WeatherContext.from25Api(
+        currentData: results[0],
+        forecastData: results[1],
+      );
+    } catch (e) {
+      throw Exception("Repository (Coordinates) Error: $e");
     }
   }
 }

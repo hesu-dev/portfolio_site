@@ -1,7 +1,7 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nell_weather/core/constants/app_colors.dart';
-
 import '../../../../data/models/weather_model.dart';
 import 'package:intl/intl.dart';
 
@@ -25,16 +25,22 @@ class HourlyForecastWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12.h),
+
+        /// 👇 핵심
         SizedBox(
           height: 120.h,
-          child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            scrollDirection: Axis.horizontal,
-            itemCount: forecasts.length,
-            separatorBuilder: (context, index) => SizedBox(width: 12.w),
-            itemBuilder: (context, index) {
-              return _buildHourlyItem(context, forecasts[index]);
-            },
+          child: ScrollConfiguration(
+            behavior: const _WebScrollBehavior(),
+            child: ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemCount: forecasts.length,
+              separatorBuilder: (context, index) => SizedBox(width: 12.w),
+              itemBuilder: (context, index) {
+                return _buildHourlyItem(context, forecasts[index]);
+              },
+            ),
           ),
         ),
       ],
@@ -49,11 +55,11 @@ class HourlyForecastWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: forecast.isRainy
             ? AppColors.primary.withOpacity(0.1)
-            : AppColors.surface,
+            : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         border: forecast.isRainy
             ? Border.all(color: AppColors.primary.withOpacity(0.5))
-            : Border.all(color: Colors.transparent),
+            : Border.all(color: Colors.grey.withOpacity(0.5)),
       ),
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Column(
@@ -73,4 +79,16 @@ class HourlyForecastWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+/// 👇 웹 전용 스크롤 설정
+class _WebScrollBehavior extends MaterialScrollBehavior {
+  const _WebScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+  };
 }

@@ -54,16 +54,12 @@ class WeeklyForecastWidget extends StatelessWidget {
             children: [
               Text(
                 "${forecast.maxTemp.round()}°",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textHighEmphasis,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
               ),
               SizedBox(width: 8.w),
               Text(
                 "${forecast.minTemp.round()}°",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textMediumEmphasis,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
               ),
             ],
           ),

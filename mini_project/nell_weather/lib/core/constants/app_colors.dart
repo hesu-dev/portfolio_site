@@ -29,4 +29,13 @@ class AppColors {
 
   // Divider/Border Colors
   static const Color divider = Color(0xFF374151);    // Dark Grey Border
+
+  // --- Light Mode Colors ---
+  static const Color lightBackground = Color(0xFFF3F4F6); // Soft Grey
+  static const Color lightSurface = Color(0xFFFFFFFF);    // White
+  static const Color lightSurfaceVariant = Color(0xFFE5E7EB); // Light Grey
+  static const Color lightTextHighEmphasis = Color(0xFF111827); // Almost Black
+  static const Color lightTextMediumEmphasis = Color(0xFF4B5563); // Grey
+  static const Color lightTextLowEmphasis = Color(0xFF9CA3AF);    // Light Grey
+  static const Color lightDivider = Color(0xFFE5E7EB);
 }

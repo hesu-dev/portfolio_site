@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 
-class CurrentWeatherHeader extends StatelessWidget {
-  final String location;
-  final int temp;
-  final String condition;
+class WeatherDescriptionLocation extends StatelessWidget {
   final String description;
+  final String location;
 
-  const CurrentWeatherHeader({
+  const WeatherDescriptionLocation({
     super.key,
-    required this.location,
-    required this.temp,
-    required this.condition,
     required this.description,
+    required this.location,
   });
 
   @override
@@ -21,36 +17,40 @@ class CurrentWeatherHeader extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 20.h),
-        // Description
         Text(
           description,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.textMediumEmphasis,
-            height: 1.4,
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.4),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 8.h),
-        
-        // Location
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.location_on_outlined, size: 14.sp, color: AppColors.textMediumEmphasis),
+            Icon(Icons.location_on_outlined, size: 14.sp),
             SizedBox(width: 4.w),
             Text(
               location.toUpperCase(),
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppColors.textMediumEmphasis,
-                letterSpacing: 1.2,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(letterSpacing: 1.2),
             ),
           ],
         ),
-        
-        SizedBox(height: 32.h),
+      ],
+    );
+  }
+}
 
-        // Temp
+class WeatherTemperature extends StatelessWidget {
+  final int temp;
+
+  const WeatherTemperature({super.key, required this.temp});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 32.h),
         Text(
           "$temp°",
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
@@ -58,10 +58,28 @@ class CurrentWeatherHeader extends StatelessWidget {
             letterSpacing: -2.0,
           ),
         ),
-        
+      ],
+    );
+  }
+}
+
+class WeatherConditionBadge extends StatelessWidget {
+  final String condition;
+  final IconData icon;
+  final Color iconColor;
+
+  const WeatherConditionBadge({
+    super.key,
+    required this.condition,
+    required this.icon,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
         SizedBox(height: 8.h),
-        
-        // Condition Badge
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           decoration: BoxDecoration(
@@ -72,13 +90,13 @@ class CurrentWeatherHeader extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.wb_sunny_rounded, color: AppColors.sunny, size: 18.sp), // Dynamic Icon Needed
+              Icon(icon, color: iconColor, size: 18.sp),
               SizedBox(width: 8.w),
               Text(
                 condition,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),
