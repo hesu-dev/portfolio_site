@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nell_weather/core/constants/app_colors.dart';
+import 'package:nell_weather/features/settings/presentation/widgets/subscription_card.dart';
 import 'package:nell_weather/features/weather/provider/weather_provider.dart';
 import '../../../../data/models/weather_model.dart';
 // import 'widgets/current_weather_header.dart'; // No longer used
@@ -86,6 +87,10 @@ class WeatherScreen extends ConsumerWidget {
                 children: [
                   // 1. Current Weather Header & Summary
                   // WeatherTemperature(temp: weather.currentTemp.round()),
+                  const SubscriptionCard(
+                    type: SubscriptionType.trial,
+                    remainingDays: 5,
+                  ),
                   SizedBox(height: 20.h),
 
                   // ** NEW: Weather Character Widget **

@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nell_weather/firebase_options.dart';
 import 'config/router.dart';
 import 'config/theme.dart';
 
@@ -10,6 +12,9 @@ import 'core/services/notification_service.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'features/settings/provider/settings_provider.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +27,15 @@ void main() async {
     // Proceed without .env (API calls might fail, but UI should load)
   }
 
+  // Stripe Setup
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '';
+
+  // Kakao Setup
+  KakaoSdk.init(
+    nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY'] ?? '',
+    javaScriptAppKey: dotenv.env['KAKAO_JS_APP_KEY'] ?? '',
+  );
+
   // 2. Initialize Hive
   try {
     await Hive.initFlutter();
@@ -32,6 +46,8 @@ void main() async {
 
   // 3. Initialize Services (Non-blocking for UI)
   initializeServices();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const ProviderScope(child: MyApp()));
 }

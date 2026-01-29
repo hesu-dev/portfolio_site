@@ -89,8 +89,14 @@ class _PixelMakerScreenState extends ConsumerState<PixelMakerScreen>
                   ).withOpacity(0.5),
                 ),
               ),
-              child: Center(
-                child: AvatarPreviewWidget(config: avatarState, scale: 2.0),
+              clipBehavior: Clip.hardEdge,
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: AvatarPreviewWidget(
+                  config: avatarState,
+                  scale: 2.0,
+                  showBackground: true,
+                ),
               ),
             ),
           ),

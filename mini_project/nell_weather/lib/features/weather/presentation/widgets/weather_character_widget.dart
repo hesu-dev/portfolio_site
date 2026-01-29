@@ -28,7 +28,8 @@ class WeatherCharacterWidget extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => _buildContent(context, ref);
+  Widget build(BuildContext context, WidgetRef ref) =>
+      _buildContent(context, ref);
 
   WeatherType _determineWeatherType() {
     // 1. Thunder/Rain via Code (2xx, 3xx, 5xx)
@@ -42,14 +43,14 @@ class WeatherCharacterWidget extends ConsumerWidget {
     // 3. Fallback to precipitation values if code is ambiguous (e.g. 800 but pop high?)
     if (rain > 0) return WeatherType.rain;
     if (snow > 0) return WeatherType.snow;
-    
+
     // 4. Wind
     if (windSpeed >= 8.0) return WeatherType.wind;
-    
+
     // 5. Default
-    return WeatherType.clear; 
+    return WeatherType.clear;
   }
-  
+
   // Re-write build to overlay badge correctly
   Widget _buildContent(BuildContext context, WidgetRef ref) {
     final avatarConfig = ref.watch(avatarProvider);
@@ -63,10 +64,10 @@ class WeatherCharacterWidget extends ConsumerWidget {
         children: [
           // 1. Scene Background + Character
           Container(
-             decoration: BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.r),
               boxShadow: [
-                 BoxShadow(
+                BoxShadow(
                   color: Colors.black.withOpacity(0.2),
                   blurRadius: 15,
                   offset: const Offset(0, 10),
@@ -124,9 +125,9 @@ class WeatherCharacterWidget extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           // 3. Edit Hint
-           Positioned(
+          Positioned(
             right: 16.w,
             top: 16.w,
             child: Icon(

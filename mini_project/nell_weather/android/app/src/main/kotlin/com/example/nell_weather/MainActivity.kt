@@ -1,4 +1,4 @@
-package com.example.nell_weather
+package com.reha.nell_weather
 
 import io.flutter.embedding.android.FlutterActivity
 

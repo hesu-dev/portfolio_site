@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../core/constants/app_colors.dart';
-import '../../../../../data/models/juso_model.dart';
-import '../../../../../data/sources/remote/juso_api_service.dart';
 import '../../provider/settings_provider.dart';
 
 class LocationManagementScreen extends ConsumerStatefulWidget {
@@ -20,15 +18,41 @@ class LocationManagementScreen extends ConsumerStatefulWidget {
 class _LocationManagementScreenState
     extends ConsumerState<LocationManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final JusoApiService _jusoService = JusoApiService();
 
-  List<JusoModel> _searchResults = [];
+  // Store search results as Pairs of (Location, Placemark)
+  List<({Location location, Placemark placemark})> _searchResults = [];
   bool _isSearching = false;
   String? _errorMsg;
 
-  void _searchJuso() async {
+  @override
+  void initState() {
+    super.initState();
+    // Rebuild to update icon color when text changes
+    _searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchPressed() async {
     final query = _searchController.text.trim();
-    if (query.isEmpty) return;
+    if (query.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("검색어를 입력해주세요."),
+          duration: Duration(seconds: 1),
+        ),
+      );
+      return;
+    }
+
+    // Dismiss keyboard
+    FocusScope.of(context).unfocus();
 
     setState(() {
       _isSearching = true;
@@ -37,56 +61,105 @@ class _LocationManagementScreenState
     });
 
     try {
-      final results = await _jusoService.searchAddress(query);
+      // 1. Get Locations from address query
+      // locationFromAddress returns a list of candidate locations.
+      // We'll limit to top 5 to keep it simple.
+      List<Location> locations = await locationFromAddress(query);
+
+      if (locations.isEmpty) {
+        setState(() {
+          _errorMsg = "검색 결과가 없습니다.";
+        });
+        return;
+      }
+
+      // 2. Reverse Geocode to get readable names (Placemarks)
+      List<({Location location, Placemark placemark})> results = [];
+
+      // Limit processing to prevent spamming the geocoder
+      final processCount = locations.length > 5 ? 5 : locations.length;
+
+      for (int i = 0; i < processCount; i++) {
+        final loc = locations[i];
+        try {
+          List<Placemark> placemarks = await placemarkFromCoordinates(
+            loc.latitude,
+            loc.longitude,
+          );
+          if (placemarks.isNotEmpty) {
+            results.add((location: loc, placemark: placemarks.first));
+          }
+        } catch (e) {
+          // If reverse geocoding fails for one, skip it
+          continue;
+        }
+      }
+
       setState(() {
         _searchResults = results;
-        if (results.isEmpty) _errorMsg = "No results found.";
+        if (results.isEmpty) {
+          _errorMsg = "상세 주소 정보를 찾을 수 없습니다.";
+        }
       });
     } catch (e) {
-      // Check for missing key error specifically to guide user
-      if (e.toString().contains("JUSO_API_KEY")) {
-        setState(
-          () => _errorMsg = "API Key Error: JUSO_API_KEY missing in .env",
-        );
-      } else {
-        setState(() => _errorMsg = "Error: $e");
+      if (mounted) {
+        setState(() {
+          _errorMsg = "위치 검색 중 오류가 발생했습니다.\n다른 검색어(예: 서울, New York)로 시도해보세요.";
+        });
       }
     } finally {
-      if (mounted) setState(() => _isSearching = false);
+      if (mounted) {
+        setState(() => _isSearching = false);
+      }
     }
   }
 
-  void _onLocationTap(JusoModel juso) {
-    // Show Dialog for Nickname
-    final nicknameController = TextEditingController(
-      text: juso.bdNm.isNotEmpty ? juso.bdNm : juso.roadAddr,
-    );
+  /// Format Placemark into a readable string
+  String _formatPlacemark(Placemark p) {
+    // Priority: Locality (City) -> SubLocality -> AdministrativeArea -> Country
+    List<String> parts = [];
+    if (p.locality != null && p.locality!.isNotEmpty) parts.add(p.locality!);
+    if (p.subLocality != null &&
+        p.subLocality!.isNotEmpty &&
+        p.subLocality != p.locality) {
+      parts.add(p.subLocality!);
+    }
+    if (p.administrativeArea != null && p.administrativeArea!.isNotEmpty) {
+      parts.add(p.administrativeArea!);
+    }
+    if (p.country != null && p.country!.isNotEmpty) parts.add(p.country!);
+
+    // If we have useful info, join it. Otherwise fallback to name or street.
+    if (parts.isNotEmpty) {
+      return parts.join(", ");
+    }
+    return p.name ?? p.street ?? "Unknown Location";
+  }
+
+  void _onLocationTap(Location loc, Placemark p) {
+    final defaultName = _formatPlacemark(p);
+    final nicknameController = TextEditingController(text: defaultName);
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.surface,
-          title: Text(
-            "Add Location",
-            style: TextStyle(color: AppColors.textHighEmphasis),
-          ),
+          title: Text("위치 추가"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text("이 위치를 추가하시겠습니까?", style: TextStyle(fontSize: 12.sp)),
+              SizedBox(height: 8.h),
               Text(
-                juso.roadAddr,
-                style: TextStyle(
-                  color: AppColors.textMediumEmphasis,
-                  fontSize: 12.sp,
-                ),
+                defaultName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 16.h),
               TextField(
                 controller: nicknameController,
                 decoration: InputDecoration(
-                  labelText: "Nickname (e.g. Home)",
-                  labelStyle: TextStyle(color: AppColors.textMediumEmphasis),
+                  labelText: "별칭 (선택 사항)",
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: AppColors.textLowEmphasis),
                   ),
@@ -94,7 +167,6 @@ class _LocationManagementScreenState
                     borderSide: BorderSide(color: AppColors.primary),
                   ),
                 ),
-                style: TextStyle(color: AppColors.textHighEmphasis),
               ),
             ],
           ),
@@ -102,17 +174,17 @@ class _LocationManagementScreenState
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                "Cancel",
+                "취소",
                 style: TextStyle(color: AppColors.textMediumEmphasis),
               ),
             ),
             TextButton(
               onPressed: () async {
                 Navigator.pop(context); // Close dialog
-                await _saveLocation(juso, nicknameController.text.trim());
+                await _saveLocation(loc, nicknameController.text.trim());
               },
               child: Text(
-                "Save",
+                "저장",
                 style: TextStyle(
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,
@@ -125,60 +197,41 @@ class _LocationManagementScreenState
     );
   }
 
-  Future<void> _saveLocation(JusoModel juso, String nickname) async {
-    // 1. Loading Indicator via SnackBar or Overlay?
-    // Let's use SnackBar for simplicity
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Processing location data...")),
-    );
+  Future<void> _saveLocation(Location loc, String nickname) async {
+    final nameToSave = nickname.isEmpty
+        ? "Unknown"
+        : nickname; // Should maintain dialog value
 
     try {
-      // 2. Geocoding to get Lat/Lng
-      // JusoModel provides address strings. We use `locationFromAddress` from geocoding package.
-      // Use roadAddr for best results.
-      List<Location> locations = await locationFromAddress(juso.roadAddr);
+      final newLocation = CustomLocation(
+        id: const Uuid().v4(),
+        name: nameToSave,
+        lat: loc.latitude,
+        lng: loc.longitude,
+        isActive: true, // Auto-activate
+      );
 
-      if (locations.isNotEmpty) {
-        final loc = locations.first;
-        final nameToSave = nickname.isEmpty ? juso.roadAddr : nickname;
+      // Add
+      await ref.read(settingsProvider.notifier).addLocation(newLocation);
+      // Toggle Active
+      await ref
+          .read(settingsProvider.notifier)
+          .toggleLocationActive(newLocation.id);
 
-        final newLocation = CustomLocation(
-          id: const Uuid().v4(),
-          name: nameToSave,
-          lat: loc.latitude,
-          lng: loc.longitude,
-          isActive:
-              true, // Auto-activate on add? User wanted "Select to change". Let's auto-activate for convenience.
-        );
-
-        // Add & Activate
-        await ref.read(settingsProvider.notifier).addLocation(newLocation);
-        // Ensure single activation logic if needed (provider toggle handles logic?)
-        // Provider's `addLocation` just adds. `toggleLocationActive` handles exclusive active.
-        // Let's manually toggle it active to be sure and deactivate others if that's the desired flow.
-        await ref
-            .read(settingsProvider.notifier)
-            .toggleLocationActive(newLocation.id);
-
-        if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("Saved: $nameToSave")));
-          // Optional: Go back or clear search?
-          // User might want to manage list. So stay on screen but maybe clear search.
-          setState(() {
-            _searchController.clear();
-            _searchResults = [];
-          });
-        }
-      } else {
-        throw Exception("Could not determine coordinates for this address.");
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("저장되었습니다: $nameToSave")));
+        setState(() {
+          _searchController.clear();
+          _searchResults = [];
+        });
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Failed to save: $e"),
+            content: Text("저장 실패: $e"),
             backgroundColor: AppColors.error,
           ),
         );
@@ -190,9 +243,9 @@ class _LocationManagementScreenState
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
     final savedLocations = settings.customLocations;
+    final hasText = _searchController.text.trim().isNotEmpty;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("내 주소 목록"),
         leading: IconButton(
@@ -204,11 +257,10 @@ class _LocationManagementScreenState
         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
         child: Column(
           children: [
-            // 1. Search Bar
+            // 1. Simple Search Bar
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -218,13 +270,13 @@ class _LocationManagementScreenState
                   Expanded(
                     child: TextField(
                       controller: _searchController,
-                      style: TextStyle(color: AppColors.textHighEmphasis),
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (_) => _onSearchPressed(),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "주소를 검색하세요",
+                        hintText: "도시 이름 (예: Seoul, Tokyo)",
                         hintStyle: TextStyle(color: AppColors.textLowEmphasis),
                       ),
-                      onSubmitted: (_) => _searchJuso(),
                     ),
                   ),
                   IconButton(
@@ -236,8 +288,12 @@ class _LocationManagementScreenState
                               strokeWidth: 2,
                             ),
                           )
-                        : Icon(Icons.send, color: AppColors.primary),
-                    onPressed: _searchJuso,
+                        : Icon(
+                            Icons.send,
+                            // Gray if empty, Primary if not
+                            color: hasText ? AppColors.primary : Colors.grey,
+                          ),
+                    onPressed: _onSearchPressed,
                   ),
                 ],
               ),
@@ -248,7 +304,8 @@ class _LocationManagementScreenState
             // 2. Content Area (Search Results OR Saved List)
             Expanded(
               child:
-                  _searchResults.isNotEmpty || _searchController.text.isNotEmpty
+                  _searchResults.isNotEmpty ||
+                      (_isSearching || _errorMsg != null)
                   ? _buildSearchResults()
                   : _buildSavedList(savedLocations),
             ),
@@ -264,39 +321,58 @@ class _LocationManagementScreenState
     }
     if (_errorMsg != null) {
       return Center(
-        child: Text(_errorMsg!, style: TextStyle(color: AppColors.error)),
-      );
-    }
-    if (_searchResults.isEmpty && _searchController.text.isNotEmpty) {
-      // User searched but no results
-      return Center(
-        child: Text(
-          "저장된 위치가 없습니다.",
-          style: TextStyle(color: AppColors.textMediumEmphasis),
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Text(
+            _errorMsg!,
+            style: TextStyle(color: AppColors.error),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }
 
-    return ListView.builder(
-      itemCount: _searchResults.length,
-      itemBuilder: (context, index) {
-        final juso = _searchResults[index];
-        return ListTile(
-          onTap: () => _onLocationTap(juso),
-          leading: Icon(
-            Icons.location_on_outlined,
-            color: AppColors.textMediumEmphasis,
+    // Results
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 8.h),
+          child: Text(
+            "검색 결과",
+            style: TextStyle(
+              color: AppColors.textMediumEmphasis,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          title: Text(
-            juso.roadAddr,
-            style: TextStyle(color: AppColors.textHighEmphasis),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _searchResults.length,
+            itemBuilder: (context, index) {
+              final item = _searchResults[index];
+              return ListTile(
+                onTap: () => _onLocationTap(item.location, item.placemark),
+                leading: Icon(
+                  Icons.location_on_outlined,
+                  color: AppColors.textMediumEmphasis,
+                ),
+                title: Text(
+                  _formatPlacemark(item.placemark),
+                  style: TextStyle(color: AppColors.textLowEmphasis),
+                ),
+                subtitle: Text(
+                  "${item.location.latitude.toStringAsFixed(4)}, ${item.location.longitude.toStringAsFixed(4)}",
+                  style: TextStyle(
+                    color: AppColors.textLowEmphasis,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              );
+            },
           ),
-          subtitle: Text(
-            juso.jibunAddr,
-            style: TextStyle(color: AppColors.textLowEmphasis),
-          ),
-        );
-      },
+        ),
+      ],
     );
   }
 
@@ -313,7 +389,7 @@ class _LocationManagementScreenState
             ),
             SizedBox(height: 16.h),
             Text(
-              "Add your favorite places\nlike Home, Office, etc.",
+              "자주 가는 지역을 추가해보세요.\n(예: 집, 회사, 여행지 등)",
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textMediumEmphasis),
             ),
@@ -345,26 +421,41 @@ class _LocationManagementScreenState
                 background: Container(
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.only(right: 20.w),
-                  color: AppColors.error,
+                  decoration: BoxDecoration(
+                    color: AppColors.error,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Icon(Icons.delete, color: Colors.white),
                 ),
                 onDismissed: (_) {
                   ref.read(settingsProvider.notifier).removeLocation(loc.id);
                 },
                 child: GestureDetector(
-                  onTap: () {
-                    ref
+                  onTap: () async {
+                    await ref
                         .read(settingsProvider.notifier)
                         .toggleLocationActive(loc.id);
+
+                    // Optional: Show snackbar
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("'${loc.name}'(으)로 위치가 설정되었습니다."),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: loc.isActive
                           ? Border.all(color: AppColors.primary, width: 2)
-                          : null,
+                          : Border.all(
+                              color: const Color.fromARGB(255, 142, 142, 142),
+                              width: 1,
+                            ),
                     ),
                     child: Row(
                       children: [
@@ -379,19 +470,13 @@ class _LocationManagementScreenState
                                   fontWeight: FontWeight.bold,
                                   color: loc.isActive
                                       ? AppColors.primary
-                                      : AppColors.textHighEmphasis,
+                                      : AppColors.background,
                                 ),
                               ),
-                              if (loc.name != "Seoul" &&
-                                  loc.name !=
-                                      "Current Location") // Simple check
-                                Text(
-                                  "${loc.lat.toStringAsFixed(4)}, ${loc.lng.toStringAsFixed(4)}",
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: AppColors.textMediumEmphasis,
-                                  ),
-                                ),
+                              Text(
+                                "${loc.lat.toStringAsFixed(4)}, ${loc.lng.toStringAsFixed(4)}",
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
                             ],
                           ),
                         ),

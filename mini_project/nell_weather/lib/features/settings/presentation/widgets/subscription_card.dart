@@ -18,11 +18,11 @@ class SubscriptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       decoration: BoxDecoration(
         color: const Color(0xFFEFF6FF), // Light Blue Background
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        // border: Border.all(color: AppColors.primary.withOpacity(0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,6 +30,8 @@ class SubscriptionCard extends StatelessWidget {
           Row(
             children: [
               Container(
+                width: 40.w,
+                height: 40.w,
                 padding: EdgeInsets.all(8.w),
                 decoration: const BoxDecoration(
                   color: Color(0xFFDBEAFE), // Lighter Blue
@@ -53,44 +55,42 @@ class SubscriptionCard extends StatelessWidget {
                       color: Colors.black87,
                     ),
                   ),
-                  if (remainingDays != 0) ...[
-                    SizedBox(height: 2.h),
-                    Text(
-                      remainingDays.toString(),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: getPlanAccentColor(type),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-              SizedBox(height: 16.h),
-              SizedBox(
-                width: double.infinity,
-                height: 48.h,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    "지금 구독하기",
+                  SizedBox(height: 2.h),
+                  Text(
+                    getPlanSubtitle(type, remainingDays) ?? "",
                     style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontSize: 12.sp,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
+          SizedBox(height: 16.h),
+          // SizedBox(
+          //   width: double.infinity,
+          //   height: 48.h,
+          //   child: ElevatedButton(
+          //     onPressed: () {},
+          //     style: ElevatedButton.styleFrom(
+          //       backgroundColor: AppColors.primary,
+          //       elevation: 0,
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(8),
+          //       ),
+          //     ),
+          //     child: Text(
+          //       "지금 구독하기",
+          //       style: TextStyle(
+          //         fontSize: 14.sp,
+          //         fontWeight: FontWeight.w600,
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

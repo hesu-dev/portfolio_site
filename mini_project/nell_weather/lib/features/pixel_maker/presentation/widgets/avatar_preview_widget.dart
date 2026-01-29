@@ -5,11 +5,13 @@ import 'pixel_avatar_assets.dart';
 class AvatarPreviewWidget extends StatefulWidget {
   final AvatarConfig config;
   final double scale;
+  final bool showBackground;
 
   const AvatarPreviewWidget({
     super.key,
     required this.config,
     this.scale = 1.0,
+    this.showBackground = false,
   });
 
   @override
@@ -62,6 +64,7 @@ class _AvatarPreviewWidgetState extends State<AvatarPreviewWidget>
               config: widget.config,
               pixelSize: pixelSize,
               breathOffset: offsetPixels,
+              showBackground: widget.showBackground,
             ),
           );
         },
@@ -74,11 +77,13 @@ class PixelAvatarPainter extends CustomPainter {
   final AvatarConfig config;
   final double pixelSize;
   final double breathOffset;
+  final bool showBackground;
 
   PixelAvatarPainter({
     required this.config,
     required this.pixelSize,
     required this.breathOffset,
+    required this.showBackground,
   });
 
   @override
@@ -113,6 +118,11 @@ class PixelAvatarPainter extends CustomPainter {
         ).withOpacity(redOpacity), // 연한 핑크 레드
         darkened,
       );
+    }
+
+    // -1. Draw Room (Optional)
+    if (showBackground) {
+      _drawRoom(canvas);
     }
 
     // 0. Draw Back Hair (Behind everything)
@@ -283,10 +293,64 @@ class PixelAvatarPainter extends CustomPainter {
     return colors[index % colors.length];
   }
 
+  void _drawRoom(Canvas canvas) {
+    // Colors
+    final wallColor = const Color(0xFFFFF9C4); // Cream Yellow
+    final floor1 = const Color(0xFFFFCC80); // Lighter Orange/Brown
+    final floor2 = const Color(0xFFFFB74D); // Darker Orange/Brown
+    final windowBg = const Color(0xFFB3E5FC); // Sky Blue
+    final windowFrame = Colors.white;
+
+    // Dimensions
+    const width = 54;
+    const height = 75;
+    const floorY = 55;
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        Color color;
+
+        if (y < floorY) {
+          // Wall
+          // Window Logic (Simple Rect: x[10-24], y[15-30])
+          if (x >= 10 && x <= 24 && y >= 15 && y <= 30) {
+            // Frame
+            if (x == 10 || x == 24 || y == 15 || y == 30 || x == 17 || y == 22) {
+              color = windowFrame;
+            } else {
+              color = windowBg;
+            }
+          } else {
+            color = wallColor;
+          }
+        } else {
+          // Floor (Checkerboard)
+          if ((x + y) % 2 == 0) {
+            color = floor1;
+          } else {
+            color = floor2;
+          }
+        }
+        
+        // Draw Pixel
+         canvas.drawRect(
+            Rect.fromLTWH(
+              x * pixelSize,
+              y * pixelSize,
+              pixelSize,
+              pixelSize,
+            ),
+            Paint()..color = color,
+          );
+      }
+    }
+  }
+
   @override
   bool shouldRepaint(covariant PixelAvatarPainter oldDelegate) {
     return oldDelegate.config != config ||
         oldDelegate.breathOffset != breathOffset ||
-        oldDelegate.pixelSize != pixelSize;
+        oldDelegate.pixelSize != pixelSize ||
+        oldDelegate.showBackground != showBackground;
   }
 }

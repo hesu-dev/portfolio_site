@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "810603844910",
+    "project_id": "nellweather",
+    "storage_bucket": "nellweather.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810603844910:android:0af59b4f8dfdd29ed996bf",
+        "android_client_info": {
+          "package_name": "com.reha.nellweather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810603844910-kblpi41u9rbt8lnv2jcs2vgnk6shjjs6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8YoR_7OHLs8A8YS7jJr1Lj9kqwk41emg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810603844910-kblpi41u9rbt8lnv2jcs2vgnk6shjjs6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "810603844910-cb2qenu89ggvklba78fk9006t95333v0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reha.nellweather"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
